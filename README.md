@@ -20,22 +20,23 @@
 
 | | |
 |---|---|
-| **Version** | **1.1.0** (28 August 2026) |
-| **Download** | [MCMITO_Setup_1.1.0.exe](https://github.com/McManus-C/McMito-releases/releases/latest) — from the *Assets* list on the release page |
+| **Version** | **1.2.0** (7 September 2026) |
+| **Download** | [MCMITO_Setup_1.2.0.exe](https://github.com/McManus-C/McMito-releases/releases/latest) — from the *Assets* list on the release page |
 | **DOI** | [10.5281/zenodo.22329660](https://doi.org/10.5281/zenodo.22329660) |
 | **Website** | [www.mcmito.com](https://www.mcmito.com) |
 | **Contact / licence keys** | cmcman@essex.ac.uk |
 
-**What's new in 1.1.0**
+**What's new in 1.2.0**
 
-- **In-app updates.** *Settings → About → Check for updates* finds, verifies and installs new versions from this repository. Updates are cryptographically signed, and your licence key, its expiry date and all preferences are kept.
-- **"As-displayed" results in the Excel export.** Three new sheets (`SlopeResults_Displayed`, `OcclusionSummary_Displayed`, `FitSummary_Displayed`) report the analysis exactly as shown on screen, honouring any occlusions or sets you excluded by hand. The existing everything-included sheets are unchanged.
-- **First-run save-location prompt.** MCMITO asks where to save your files on first launch (default `Documents\MCMITO`); editable at any time under *Settings → Files*.
-- **Fixes.** Saves no longer overwrite earlier files (`name (2).xlsx`, `name (3).xlsx`, …); the PDF report asks you to re-fit if exclusions changed after fitting; *Settings → Export preferences* now saves correctly in the installed app.
+- **Train.Red FYER import.** MCMITO now reads Train.Red session exports (`.csv`) as well as Artinis OxySoft exports; the format is detected automatically. The named header row is offered in the channel-mapping dialog, with the `unfiltered` channels (SmO2, O2HB, HHb, THb) and `Lap/Event` selected by default.
+- **Sample rate inferred from timestamps.** Train.Red files carry a seconds column with irregular Bluetooth intervals and no declared rate. MCMITO estimates the native rate robustly (ignoring dropout gaps, snapped to the nominal device rate when close) and shows the native timing statistics in the mapping dialog.
+- **Time-base regularisation.** Seconds-based recordings are resampled by linear interpolation onto a uniform grid at the confirmed rate, so the analysis engine sees a regular time base. On by default; can be switched off to keep native timestamps.
+- **Import provenance in exports.** The Excel `Metadata` sheet gains a `Source.Import.*` block (device, sensor ID and position, time basis, native timing statistics, tHb/HbDiff identity check) and the PDF footer carries a one-line source summary. The `.mcmito` session file stores the confirmed mapping with this provenance.
+- OxySoft import, all analysis outputs and existing session files are unchanged.
 
 Full history: [CHANGELOG](#changelog) below.
 
-> Already running **1.0.0a1**? That version predates the updater, so download and run the 1.1.0 installer once. It installs over the top and keeps your licence. From 1.1.0 onwards, updates arrive through the app.
+> Already running **1.1.0**? Use *Settings → About → Check for updates* and the app will install 1.2.0 for you. Running **1.0.0a1**? That version predates the updater, so download and run the 1.2.0 installer once; it installs over the top and keeps your licence.
 
 ---
 
@@ -60,6 +61,7 @@ The whole pipeline runs locally on your machine. Your data never leave it.
 | **Per-occlusion slopes** | mV̇O₂ extracted from each occlusion, with a choice of slope window (full included window or steepest window), and automatic exclusion of low-R² and negative-slope occlusions. |
 | **Recovery-curve fitting** | Mono-exponential fit of mV̇O₂ against time to *k* and *τ*, with standard errors and R² quality tiers, per set and combined. |
 | **Exercise-stimulus metrics** | The exercise bout preceding each set is identified on TSI % and its key metrics extracted. |
+| **Two device families** | Artinis OxySoft exports (PortaMon, PortaLite, OxyMon) and Train.Red FYER session exports, with automatic format detection and a common channel-mapping dialog. |
 | **Transparent and reproducible** | Every per-occlusion slope, exclusion and fit is visible and exportable. Each export records the software and algorithm version. |
 | **Publication-ready exports** | One click to a full Excel workbook and a formatted PDF report. Save and reload a complete participant session (`.mcmito`) to pick up where you left off. |
 
@@ -67,7 +69,7 @@ The whole pipeline runs locally on your machine. Your data never leave it.
 
 ## How it works
 
-**1. Import.** Drag in your NIRS recording. Map channels once; MCMITO remembers the layout.
+**1. Import.** Drag in your NIRS recording — an Artinis OxySoft export or a Train.Red FYER session export. Map channels once; MCMITO remembers the layout. For Train.Red files the sample rate is inferred from the timestamps and the recording is regularised onto a uniform time grid.
 
 **2. Detect and mark.** Auto-detect occlusions per set, or place and refine markers by hand.
 
@@ -135,7 +137,7 @@ The analysis pipeline has been validated against synthetic NIRS recordings with 
 
 If you use MCMITO in your research, please cite the software together with the underlying method:
 
-> McManus, C. (2026). *MCMITO: Near-infrared spectroscopy analysis of skeletal-muscle mitochondrial oxidative capacity* (Version 1.1.0) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.22329660
+> McManus, C. (2026). *MCMITO: Near-infrared spectroscopy analysis of skeletal-muscle mitochondrial oxidative capacity* (Version 1.2.0) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.22329660
 
 ---
 
@@ -146,6 +148,15 @@ MCMITO is **proprietary, licensed software** provided under an End-User Licence 
 MCMITO is intended for **research and educational use only and is not a medical device**. It is not for the diagnosis, prevention, monitoring, prediction, prognosis, treatment or alleviation of disease, and it has not been assessed by the MHRA or any other regulatory authority. You are responsible for independently validating any results you rely on.
 
 ## Changelog
+
+### 1.2.0 — 7 September 2026
+
+- New: Train.Red FYER `.csv` session import with automatic format detection; default mapping uses the `unfiltered` channels and `Lap/Event`.
+- New: sample rate inferred from the timestamp column for seconds-based files (gap-robust estimate, snapped to the nominal device rate); native timing statistics shown in the mapping dialog.
+- New: regularisation of irregular timestamps onto a uniform grid by linear interpolation (default on; switchable).
+- New: import provenance (`Source.Import.*`) in the Excel Metadata sheet, a source line in the PDF footer, and the import mapping stored in `.mcmito` session files.
+- Changed: unrecognised-file message lists supported formats; Time-column rate detection uses the gap-robust estimator.
+- Unchanged: OxySoft import, analysis outputs, session-file schema (algorithm version 1).
 
 ### 1.1.0 — 28 August 2026
 
