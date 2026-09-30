@@ -20,23 +20,26 @@
 
 | | |
 |---|---|
-| **Version** | **1.2.0** (7 September 2026) |
-| **Download** | [MCMITO_Setup_1.2.0.exe](https://github.com/McManus-C/McMito-releases/releases/latest) — from the *Assets* list on the release page |
+| **Version** | **1.3.0** (30 September 2026) |
+| **Download** | [MCMITO_Setup_1.3.0.exe](https://github.com/McManus-C/McMito-releases/releases/latest) — from the *Assets* list on the release page |
 | **DOI** | [10.5281/zenodo.22329660](https://doi.org/10.5281/zenodo.22329660) |
 | **Website** | [www.mcmito.com](https://www.mcmito.com) |
 | **Contact / licence keys** | cmcman@essex.ac.uk |
 
-**What's new in 1.2.0**
+**What's new in 1.3.0**
 
-- **Train.Red FYER import.** MCMITO now reads Train.Red session exports (`.csv`) as well as Artinis OxySoft exports; the format is detected automatically. The named header row is offered in the channel-mapping dialog, with the `unfiltered` channels (SmO2, O2HB, HHb, THb) and `Lap/Event` selected by default.
-- **Sample rate inferred from timestamps.** Train.Red files carry a seconds column with irregular Bluetooth intervals and no declared rate. MCMITO estimates the native rate robustly (ignoring dropout gaps, snapped to the nominal device rate when close) and shows the native timing statistics in the mapping dialog.
-- **Time-base regularisation.** Seconds-based recordings are resampled by linear interpolation onto a uniform grid at the confirmed rate, so the analysis engine sees a regular time base. On by default; can be switched off to keep native timestamps.
-- **Import provenance in exports.** The Excel `Metadata` sheet gains a `Source.Import.*` block (device, sensor ID and position, time basis, native timing statistics, tHb/HbDiff identity check) and the PDF footer carries a one-line source summary. The `.mcmito` session file stores the confirmed mapping with this provenance.
-- OxySoft import, all analysis outputs and existing session files are unchanged.
+- **Beever et al. (2020) blood flow correction.** A fourth correction option, the incremental method of Beever et al. (2020), sits alongside Ryan et al. (2012) Methods 1–3. The Data Cleaning tab now shows the source of each method.
+- **Three slope windows.** Choose the full included window, the steepest sub-window, or the new best-fit sub-window, which slides a window (default 3 s) across each occlusion and keeps the best-fitting line: highest R² (the criterion of Beever et al., 2020) or lowest RMSE. Steepest and best-fit windows default to 0.0 / 0.0 s trims; each mode has a tooltip.
+- **Redesigned marker placement.** An *Add markers* card with *Auto Detect* and *Add Manually* modes: each click places the next highlighted item, which ticks when placed; anchors match the number of sets; detected occlusions are listed per set; untick to re-place; an Edit panel nudges (buttons or arrow keys), snaps to a peak or lets you drag the line; *Apply* checks a manually placed set; help icons explain each marker.
+- **Clearer correction workflow.** Blood flow correction and calibration appear as numbered steps 1 and 2, with progress and confirmation messages; calibration can be undone. Re-applying either step clears results computed on the signals it changes, and loading a new recording resets the analysis and report fields.
+- **Methods in every report.** The PDF report gains a methods section (correction method, signal, slope window and settings, recovery fit, references); the Excel metadata and `.mcmito` session files record the slope settings.
+- **Renew your licence in the app.** *Settings → Licence* shows your licence status and Machine ID and accepts a new key without restarting.
+- **Fixes.** *Compute slopes* and *Fit recovery curve* no longer fail silently after entering values such as 0.75 s or R² 0.82; sub-window lengths such as 2 or 5 s are used as entered (they previously reverted to 3 s). Number boxes accept any decimal in range, with arrow steps of 0.1 for trims, R² thresholds and window length; an empty box is named; unexpected errors raise a notice.
+- **Changes.** The default correction method set in *Settings → Defaults* is now applied; recomputing slopes clears the previous recovery fit; Robust (Huber) slope fitting has been removed. Algorithm version 2. Sessions and preferences from 1.2.0 open as before.
 
 Full history: [CHANGELOG](#changelog) below.
 
-> Already running **1.1.0**? Use *Settings → About → Check for updates* and the app will install 1.2.0 for you. Running **1.0.0a1**? That version predates the updater, so download and run the 1.2.0 installer once; it installs over the top and keeps your licence.
+> Already running **1.1.0** or **1.2.0**? Use *Settings → About → Check for updates* and the app will install 1.3.0 for you. Running **1.0.0a1**? That version predates the updater, so download and run the 1.3.0 installer once; it installs over the top and keeps your licence.
 
 ---
 
@@ -57,8 +60,8 @@ The whole pipeline runs locally on your machine. Your data never leave it.
 |---|---|
 | **Automated occlusion detection** | Consensus detection finds every cuff occlusion in each set and places the markers for you, each with a confidence score you can accept, shunt or remove. |
 | **Manual marking** | Place, move and remove set anchors and occlusion markers by hand on full-resolution traces, with instant feedback. |
-| **Correction and calibration** | Ryan blood-volume correction and physiological 0–100 % calibration are built in. |
-| **Per-occlusion slopes** | mV̇O₂ extracted from each occlusion, with a choice of slope window (full included window or steepest window), and automatic exclusion of low-R² and negative-slope occlusions. |
+| **Correction and calibration** | Blood flow correction by Ryan et al. (2012) Methods 1–3 or Beever et al. (2020), and physiological 0–100 % calibration, are built in. |
+| **Per-occlusion slopes** | mV̇O₂ extracted from each occlusion, with a choice of slope window (full included window, steepest sub-window or best-fit sub-window), and automatic exclusion of low-R² and negative-slope occlusions. |
 | **Recovery-curve fitting** | Mono-exponential fit of mV̇O₂ against time to *k* and *τ*, with standard errors and R² quality tiers, per set and combined. |
 | **Exercise-stimulus metrics** | The exercise bout preceding each set is identified on TSI % and its key metrics extracted. |
 | **Two device families** | Artinis OxySoft exports (PortaMon, PortaLite, OxyMon) and Train.Red FYER session exports, with automatic format detection and a common channel-mapping dialog. |
@@ -131,13 +134,17 @@ MCMITO implements the established repeated-cuff NIRS method for muscle mitochond
 
 > Ryan TE, Erickson ML, Brizendine JT, Young HJ, McCully KK. Noninvasive evaluation of skeletal muscle mitochondrial capacity with near-infrared spectroscopy: correcting for blood volume changes. *Journal of Applied Physiology*. 2012;113(2):175–183. https://doi.org/10.1152/japplphysiol.00319.2012
 
+Blood flow correction Method 4 and the best-fit slope window follow:
+
+> Beever AT, Tripp TR, Zhang J, MacInnis MJ. NIRS-derived skeletal muscle oxidative capacity is correlated with aerobic fitness and independent of sex. *Journal of Applied Physiology*. 2020;129(3):558–568. https://doi.org/10.1152/japplphysiol.00017.2020
+
 The analysis pipeline has been validated against synthetic NIRS recordings with known recovery kinetics, so the pipeline is shown to recover the truth before it sees your data.
 
 ## How to cite
 
-If you use MCMITO in your research, please cite the software together with the underlying method:
+If you use MCMITO in your research, please cite the software together with the underlying method (and Beever et al., 2020, if you use Method 4 or the best-fit window):
 
-> McManus, C. (2026). *MCMITO: Near-infrared spectroscopy analysis of skeletal-muscle mitochondrial oxidative capacity* (Version 1.2.0) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.22329660
+> McManus, C. (2026). *MCMITO: Near-infrared spectroscopy analysis of skeletal-muscle mitochondrial oxidative capacity* (Version 1.3.0) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.22329660
 
 ---
 
@@ -148,6 +155,20 @@ MCMITO is **proprietary, licensed software** provided under an End-User Licence 
 MCMITO is intended for **research and educational use only and is not a medical device**. It is not for the diagnosis, prevention, monitoring, prediction, prognosis, treatment or alleviation of disease, and it has not been assessed by the MHRA or any other regulatory authority. You are responsible for independently validating any results you rely on.
 
 ## Changelog
+
+### 1.3.0 — 30 September 2026
+
+- New: blood flow correction Method 4 (Beever et al., 2020, incremental), alongside Ryan et al. (2012) Methods 1–3; the Data Cleaning label reads "Blood Flow Correction Method" with the source of each method.
+- New: best-fit sub-window slope mode (highest R², as used by Beever et al., 2020, or lowest RMSE; physiological-direction windows only); tooltips for all slope window modes.
+- New: default trims by window mode (full window 0.5/0.5 s; steepest and best-fit 0.0/0.0 s).
+- New: PDF methods section with references; slope settings saved in `.mcmito` session files and recorded in the Excel metadata.
+- New: in-app licence renewal (*Settings → Licence*).
+- New: redesigned marker panel (*Auto Detect* / *Add Manually*, guided click placement with ticks, anchors matching the set count, detected occlusions listed per set, untick to re-place, Edit panel with nudge, arrow keys, snap and drag, *Apply* check for manual marking, help icons).
+- New: blood flow correction and calibration shown as steps 1 and 2 with progress and confirmation; *Undo calibration*; loading a new recording resets the analysis and report fields.
+- Changed: the default correction method in *Settings → Defaults* is now applied; Robust (Huber) slope fitting removed. Algorithm version 2.
+- New: re-applying blood flow correction or calibration clears slopes and fits computed on the signals it changes; tooltip on *Export results to Excel* explaining that the export re-runs the analysis with the current settings.
+- Fixed: *Compute slopes* and *Fit recovery curve* could fail silently (results appeared stuck) after entering values such as 0.75 s or R² 0.82, and sub-window lengths such as 2 or 5 s reverted to 3 s; number boxes now accept any decimal in range (arrow steps of 0.1 for trims, R² thresholds and window length), invalid boxes are named, unexpected errors raise a notice, and recomputing slopes clears the old recovery fit.
+- Unchanged: sessions and preferences from 1.2.0 open as before.
 
 ### 1.2.0 — 7 September 2026
 
