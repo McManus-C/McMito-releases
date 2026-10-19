@@ -20,11 +20,21 @@
 
 | | |
 |---|---|
-| **Version** | **1.4.1** (12 October 2026) |
-| **Download** | [MCMITO_Setup_1.4.1.exe](https://github.com/McManus-C/McMito-releases/releases/latest), from the *Assets* list on the release page |
+| **Version** | **1.4.2** (19 October 2026) |
+| **Download** | [MCMITO_Setup_1.4.2.exe](https://github.com/McManus-C/McMito-releases/releases/latest), from the *Assets* list on the release page |
 | **DOI** | [10.5281/zenodo.22647702](https://doi.org/10.5281/zenodo.22647702) |
 | **Website** | [www.mcmito.com](https://www.mcmito.com) |
 | **Contact / licence keys** | cmcman@essex.ac.uk |
+
+**What's new in 1.4.2**
+
+- **McMito Live session files open.** 1.4.1 could not open `.mcmito` files saved by McMito Live (*'utf-8' codec can't decode byte 0x80*); the missing reader is now included.
+- **Sensor dropouts load as blanks, not zeros,** for McMito Live recordings, and downsampling keeps a gap a gap.
+- **The Protocol boxes now drive the analysis.** Edits to sets, occlusions per set, cycle period and occlusion duration after loading now update auto-detect, the slope and Method 1 windows, the fit overlay and the Excel metadata.
+- **Cuff markers from a McMito Live session** for an imported raw device file, so auto-detect is not needed.
+- **Per-occlusion fit figure** keeps its panel size for long protocols (for example 2 × 17), each set on a new row.
+- **Data Cleaning:** the controls scroll on their own, and a fixed readout in each plot's title strip replaces the floating hover box.
+- Algorithm version 2 (unchanged).
 
 **What's new in 1.4.1**
 
@@ -37,7 +47,7 @@
 
 Full history: [CHANGELOG](#changelog) below.
 
-> Already running **1.1.0**, **1.2.0** or **1.3.0**? Use *Settings → About → Check for updates* and the app will install 1.4.1 for you. Running **1.0.0a1**? That version predates the updater, so download and run the 1.4.1 installer once; it installs over the top and keeps your licence.
+> Already running **1.1.0**, **1.2.0** or **1.3.0**? Use *Settings → About → Check for updates* and the app will install 1.4.2 for you. Running **1.0.0a1**? That version predates the updater, so download and run the 1.4.2 installer once; it installs over the top and keeps your licence.
 
 ---
 
@@ -142,7 +152,7 @@ The analysis pipeline has been validated against synthetic NIRS recordings with 
 
 If you use MCMITO in your research, please cite the software together with the underlying method (and Beever et al., 2020, if you use Method 4 or the best-fit window):
 
-> McManus, C. (2026). *MCMITO: Near-infrared spectroscopy analysis of skeletal-muscle mitochondrial oxidative capacity* (Version 1.4.1) [Computer software]. Zenodo. https://doi.org/<DOI>
+> McManus, C. (2026). *MCMITO: Near-infrared spectroscopy analysis of skeletal-muscle mitochondrial oxidative capacity* (Version 1.4.2) [Computer software]. Zenodo. https://doi.org/<DOI>
 
 ---
 
@@ -153,6 +163,17 @@ MCMITO is **proprietary, licensed software** provided under an End-User Licence 
 MCMITO is intended for **research and educational use only and is not a medical device**. It is not for the diagnosis, prevention, monitoring, prediction, prognosis, treatment or alleviation of disease, and it has not been assessed by the MHRA or any other regulatory authority. You are responsible for independently validating any results you rely on.
 
 ## Changelog
+
+### 1.4.2 — 19 October 2026
+
+- Fixed: `.mcmito` files saved by McMito Live open (1.4.1 was built without the parquet reader they need). A build without it now says so plainly.
+- Fixed: for McMito Live recordings, an SmO2, O2Hb or HHb of exactly 0 (the sensor's "no reading") loads as a blank, with tHb blank wherever O2Hb or HHb is. OxySoft and Train.Red app files are unchanged.
+- Fixed: Downsample keeps a blank sample local instead of blanking the filter length around it; data without blanks downsample exactly as before.
+- Fixed: the Protocol boxes (sets, occlusions per set, cycle period, occlusion duration) now apply to auto-detect, the slope window, the Method 1 windows, the fit overlay and the Excel metadata when edited after loading. Markers are kept; slopes and fits from the previous protocol are cleared, with a message.
+- Fixed: the per-occlusion fit figure keeps the 4 × 6 panel size for any number of occlusions, and each set starts on a new row.
+- New: *Load cuff markers from .mcmito* after importing a McMito Live raw device file.
+- Interface: Data Cleaning controls scroll independently of the plots; a fixed hover readout per plot replaces the floating hover box.
+- Unchanged: algorithm version 2. Results change only for a McMito Live recording with a sensor dropout inside an analysis window.
 
 ### 1.4.1 — 12 October 2026
 
@@ -179,36 +200,3 @@ MCMITO is intended for **research and educational use only and is not a medical 
 - New: blood flow correction and calibration shown as steps 1 and 2 with progress and confirmation; *Undo calibration*; loading a new recording resets the analysis and report fields.
 - Changed: the default correction method in *Settings → Defaults* is now applied; Robust (Huber) slope fitting removed; *About & Cite* shows the software citation and DOI, with licence wording that refers to the EULA. Algorithm version 2.
 - New: re-applying blood flow correction or calibration clears slopes and fits computed on the signals it changes; tooltip on *Export results to Excel* explaining that the export re-runs the analysis with the current settings.
-- Fixed: *Compute slopes* and *Fit recovery curve* could fail silently (results appeared stuck) after entering values such as 0.75 s or R² 0.82, and sub-window lengths such as 2 or 5 s reverted to 3 s; number boxes now accept any decimal in range (arrow steps of 0.1 for trims, R² thresholds and window length), invalid boxes are named, unexpected errors raise a notice, and recomputing slopes clears the old recovery fit.
-- Unchanged: sessions and preferences from 1.2.0 open as before.
-
-### 1.2.0 — 7 September 2026
-
-- New: Train.Red FYER `.csv` session import with automatic format detection; default mapping uses the `unfiltered` channels and `Lap/Event`.
-- New: sample rate inferred from the timestamp column for seconds-based files (gap-robust estimate, snapped to the nominal device rate); native timing statistics shown in the mapping dialog.
-- New: regularisation of irregular timestamps onto a uniform grid by linear interpolation (default on; switchable).
-- New: import provenance (`Source.Import.*`) in the Excel Metadata sheet, a source line in the PDF footer, and the import mapping stored in `.mcmito` session files.
-- Changed: unrecognised-file message lists supported formats; Time-column rate detection uses the gap-robust estimator.
-- Unchanged: OxySoft import, analysis outputs, session-file schema (algorithm version 1).
-
-### 1.1.0 — 28 August 2026
-
-- New: in-app software updates (*Settings → About → Check for updates*).
-- New: "as-displayed" results sheets in the Excel export (`SlopeResults_Displayed`, `OcclusionSummary_Displayed`, `FitSummary_Displayed`); the Metadata sheet records user-excluded occlusions.
-- New: first-run save-location prompt (default `Documents\MCMITO`).
-- Fixed: saves no longer overwrite earlier files of the same name.
-- Fixed: PDF report staleness guard when exclusions change after fitting.
-- Fixed: *Settings → Export preferences* now saves correctly in the installed desktop app.
-
-### 1.0.0a1 — 25 June 2026
-
-- First packaged release: standalone Windows application with native window, machine-bound time-limited licence activation, protected analysis core, installer and configurable output folder.
-- Analysis platform: import and channel mapping, marker placement and auto-detection, blood-volume correction, physiological calibration, per-occlusion slope extraction with automatic low-R² and negative-mV̇O₂ exclusion, recovery-curve fitting (*k*, *τ*, SE, R²), exercise-stimulus metrics, Excel and PDF exports, and participant-session save/load.
-
----
-
-## Contact
-
-Chris McManus — University of Essex — cmcman@essex.ac.uk — [www.mcmito.com](https://www.mcmito.com)
-
-© 2026 Chris McManus. All rights reserved.
