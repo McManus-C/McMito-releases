@@ -20,11 +20,16 @@
 
 | | |
 |---|---|
-| **Version** | **1.4.2** (19 October 2026) |
-| **Download** | [MCMITO_Setup_1.4.2.exe](https://github.com/McManus-C/McMito-releases/releases/latest), from the *Assets* list on the release page |
+| **Version** | **1.4.3** (28 October 2026) |
+| **Download** | [MCMITO_Setup_1.4.3.exe](https://github.com/McManus-C/McMito-releases/releases/latest), from the *Assets* list on the release page |
 | **DOI** | [10.5281/zenodo.22647702](https://doi.org/10.5281/zenodo.22647702) |
 | **Website** | [www.mcmito.com](https://www.mcmito.com) |
 | **Contact / licence keys** | cmcman@essex.ac.uk |
+
+**What's new in 1.4.3**
+
+- **Analysis settings no longer revert after Compute slopes.** A display element that failed to draw could make the page undo your most recent setting changes and re-run *Compute* with the defaults. MCMITO now blocks that roll-back and logs the failing element to `%USERPROFILE%\.mcmito\frontend_errors.log`.
+- Algorithm version 2 (unchanged). Results are identical to 1.4.2.
 
 **What's new in 1.4.2**
 
@@ -39,7 +44,7 @@
 **What's new in 1.4.1**
 
 - **Exercise periods and force dose.** Exercise periods are now markers you can place and correct, taken from your markers, a McMito Live protocol record, the 1.3.0 look-back or signal variance. Each period gets NIRS response metrics, and recordings with a force gauge get time under load, impulse, % MVC, repetitions and an exploratory dose–response fit. New Excel sheets and an optional PDF section.
-- **McMito Live recordings.** Opens sessions recorded by [McMito Live](https://github.com/McManus-C/McMito-Live-releases), the companion acquisition and cuff-control app, and imports its raw device files on the session clock. Because Live records absolute O2Hb and HHb, its data open with blood flow correction Method 4 (Beever, 2020); the Ryan methods remain available with a caution.
+- **McMito Live recordings.** Opens sessions recorded by [McMito Live](https://github.com/McManus-C/McMito-Live-releases), the companion acquisition and cuff-control app, and imports its raw device files on the session clock. Because Live records O2Hb and HHb as levels that include the sensor's starting offset, rather than as changes from zero, its data open with blood flow correction Method 4 (Beever, 2020); the Ryan methods remain available with a caution.
 - **Resting occlusion optional.** Slopes, the recovery fit and the Excel export run without Rest markers; fit methods that need the resting value are disabled with an explanation.
 - **Crop and Downsample on saved sessions**, keeping the markers.
 - **Much faster plots.** A full Data Cleaning render on a 34-occlusion recording fell from about 12 s to 0.36 s; plots no longer go blank after repeated re-renders; linked zoom works across all five plots again.
@@ -47,7 +52,7 @@
 
 Full history: [CHANGELOG](#changelog) below.
 
-> Already running **1.1.0**, **1.2.0** or **1.3.0**? Use *Settings → About → Check for updates* and the app will install 1.4.2 for you. Running **1.0.0a1**? That version predates the updater, so download and run the 1.4.2 installer once; it installs over the top and keeps your licence.
+> Already running **1.1.0**, **1.2.0** or **1.3.0**? Use *Settings → About → Check for updates* and the app will install 1.4.3 for you. Running **1.0.0a1**? That version predates the updater, so download and run the 1.4.3 installer once; it installs over the top and keeps your licence.
 
 ---
 
@@ -152,7 +157,7 @@ The analysis pipeline has been validated against synthetic NIRS recordings with 
 
 If you use MCMITO in your research, please cite the software together with the underlying method (and Beever et al., 2020, if you use Method 4 or the best-fit window):
 
-> McManus, C. (2026). *MCMITO: Near-infrared spectroscopy analysis of skeletal-muscle mitochondrial oxidative capacity* (Version 1.4.2) [Computer software]. Zenodo. https://doi.org/<DOI>
+> McManus, C. (2026). *MCMITO: Near-infrared spectroscopy analysis of skeletal-muscle mitochondrial oxidative capacity* (Version 1.4.3) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.22647702
 
 ---
 
@@ -163,6 +168,12 @@ MCMITO is **proprietary, licensed software** provided under an End-User Licence 
 MCMITO is intended for **research and educational use only and is not a medical device**. It is not for the diagnosis, prevention, monitoring, prediction, prognosis, treatment or alleviation of disease, and it has not been assessed by the MHRA or any other regulatory authority. You are responsible for independently validating any results you rely on.
 
 ## Changelog
+
+### 1.4.3 — 28 October 2026
+
+- Fixed: analysis settings (signal, min samples per slope and others) could revert to their defaults a few seconds after *Compute slopes*, and *Compute* then re-ran with the defaults. The page framework undid recent input changes whenever a display element failed to draw; that roll-back is now blocked.
+- New: a display element that fails to draw shows a notice and is logged to `%USERPROFILE%\.mcmito\frontend_errors.log`.
+- Unchanged: algorithm version 2. Results are identical to 1.4.2.
 
 ### 1.4.2 — 19 October 2026
 
@@ -180,7 +191,7 @@ MCMITO is intended for **research and educational use only and is not a medical 
 - New: exercise periods as markers (*Add Manually → Exercise periods*); the Exercise Stimulus tab takes periods from the markers, a McMito Live protocol record, the 1.3.0 fixed look-back or signal variance, writes estimated periods as markers, and adds change from start to end, change from the resting baseline, desaturation slope, time to minimum, mean of the last 2 s and the post-exercise nadir.
 - New: force dose for McMito Live recordings with a Tindeq Progressor (time under load, impulse, mean and peak force, % MVC, repetitions, duty cycle, CV, fatigue index, MVC table, force trace figure) and an exploratory dose–response fit.
 - New: Excel sheets `ExercisePeriods`, `ExerciseMetrics`, `ForcePeriods`, `ForceReps`, `MVC`, `DoseResponse`, `ExerciseSummary` and optional `ForceTrace` (`ExercisePhases` kept for this release); optional *Exercise and force* section in the PDF report.
-- New: McMito Live sessions and raw device files (`*.trainred.raw.csv`, session clock kept, tHb derived, off-skin packets skipped); McMito Live data open with blood flow correction Method 4 (Beever, 2020); Ryan Methods 1–3 on absolute O2Hb / HHb show a caution recorded as `BFWarning` in the Excel metadata.
+- New: McMito Live sessions and raw device files (`*.trainred.raw.csv`, session clock kept, tHb derived, off-skin packets skipped); McMito Live data open with blood flow correction Method 4 (Beever, 2020); Ryan Methods 1–3 on McMito Live's offset-including O2Hb / HHb show a caution recorded as `BFWarning` in the Excel metadata.
 - New: `MCMITO.exe --open <file.mcmito>` opens a saved session at launch.
 - Changed: the resting occlusion is optional for slopes, the recovery fit and the Excel export (`RestingMeasure: none`); fit methods that need the resting value are disabled without it.
 - Changed: Crop and Downsample work on saved sessions and keep the markers; Downsample keeps the record's time origin.
@@ -200,3 +211,36 @@ MCMITO is intended for **research and educational use only and is not a medical 
 - New: blood flow correction and calibration shown as steps 1 and 2 with progress and confirmation; *Undo calibration*; loading a new recording resets the analysis and report fields.
 - Changed: the default correction method in *Settings → Defaults* is now applied; Robust (Huber) slope fitting removed; *About & Cite* shows the software citation and DOI, with licence wording that refers to the EULA. Algorithm version 2.
 - New: re-applying blood flow correction or calibration clears slopes and fits computed on the signals it changes; tooltip on *Export results to Excel* explaining that the export re-runs the analysis with the current settings.
+- Fixed: *Compute slopes* and *Fit recovery curve* could fail silently (results appeared stuck) after entering values such as 0.75 s or R² 0.82, and sub-window lengths such as 2 or 5 s reverted to 3 s; number boxes now accept any decimal in range (arrow steps of 0.1 for trims, R² thresholds and window length), invalid boxes are named, unexpected errors raise a notice, and recomputing slopes clears the old recovery fit.
+- Unchanged: sessions and preferences from 1.2.0 open as before.
+
+### 1.2.0 — 7 September 2026
+
+- New: Train.Red FYER `.csv` session import with automatic format detection; default mapping uses the `unfiltered` channels and `Lap/Event`.
+- New: sample rate inferred from the timestamp column for seconds-based files (gap-robust estimate, snapped to the nominal device rate); native timing statistics shown in the mapping dialog.
+- New: regularisation of irregular timestamps onto a uniform grid by linear interpolation (default on; switchable).
+- New: import provenance (`Source.Import.*`) in the Excel Metadata sheet, a source line in the PDF footer, and the import mapping stored in `.mcmito` session files.
+- Changed: unrecognised-file message lists supported formats; Time-column rate detection uses the gap-robust estimator.
+- Unchanged: OxySoft import, analysis outputs, session-file schema (algorithm version 1).
+
+### 1.1.0 — 28 August 2026
+
+- New: in-app software updates (*Settings → About → Check for updates*).
+- New: "as-displayed" results sheets in the Excel export (`SlopeResults_Displayed`, `OcclusionSummary_Displayed`, `FitSummary_Displayed`); the Metadata sheet records user-excluded occlusions.
+- New: first-run save-location prompt (default `Documents\MCMITO`).
+- Fixed: saves no longer overwrite earlier files of the same name.
+- Fixed: PDF report staleness guard when exclusions change after fitting.
+- Fixed: *Settings → Export preferences* now saves correctly in the installed desktop app.
+
+### 1.0.0a1 — 25 June 2026
+
+- First packaged release: standalone Windows application with native window, machine-bound time-limited licence activation, protected analysis core, installer and configurable output folder.
+- Analysis platform: import and channel mapping, marker placement and auto-detection, blood-volume correction, physiological calibration, per-occlusion slope extraction with automatic low-R² and negative-mV̇O₂ exclusion, recovery-curve fitting (*k*, *τ*, SE, R²), exercise-stimulus metrics, Excel and PDF exports, and participant-session save/load.
+
+---
+
+## Contact
+
+Chris McManus — University of Essex — cmcman@essex.ac.uk — [www.mcmito.com](https://www.mcmito.com)
+
+© 2026 Chris McManus. All rights reserved.
