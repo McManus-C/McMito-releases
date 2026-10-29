@@ -19,7 +19,7 @@ MCMITO 1.4.3 is a maintenance release with one fix. On the Mitochondrial Oxidati
 
 ## Citation
 
-McManus, C. (2026). *MCMITO: Near-infrared spectroscopy analysis of skeletal-muscle mitochondrial oxidative capacity* (Version 1.4.3) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.22647702
+McManus, C. (2026). *MCMITO: Near-infrared spectroscopy analysis of skeletal-muscle mitochondrial oxidative capacity* (Version 1.4.3) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.21976705
 
 Please also cite the method: Ryan TE, Erickson ML, Brizendine JT, Young HJ, McCully KK. Noninvasive evaluation of skeletal muscle mitochondrial capacity with near-infrared spectroscopy: correcting for blood volume changes. *J Appl Physiol* 2012;113(2):175–183. If you use Method 4 or the best-fit window, also cite Beever AT, Tripp TR, Zhang J, MacInnis MJ. NIRS-derived skeletal muscle oxidative capacity is correlated with aerobic fitness and independent of sex. *J Appl Physiol* 2020;129(3):558–568.
 

@@ -9,7 +9,7 @@
 
 <p align="center">
   <a href="https://github.com/McManus-C/McMito-releases/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/McManus-C/McMito-releases?label=latest%20release&color=0e9f9f"></a>
-  <a href="https://doi.org/10.5281/zenodo.22647702"><img alt="DOI" src="https://img.shields.io/badge/DOI-10.5281%2Fzenodo.22647702-blue"></a>
+  <a href="https://doi.org/10.5281/zenodo.21976705"><img alt="DOI" src="https://img.shields.io/badge/DOI-10.5281%2Fzenodo.21976705-blue"></a>
   <a href="https://www.mcmito.com"><img alt="Website" src="https://img.shields.io/badge/website-mcmito.com-0b3d5c"></a>
   <img alt="Platform" src="https://img.shields.io/badge/platform-Windows%2010%20%7C%2011-lightgrey">
 </p>
@@ -22,7 +22,7 @@
 |---|---|
 | **Version** | **1.4.3** (28 October 2026) |
 | **Download** | [MCMITO_Setup_1.4.3.exe](https://github.com/McManus-C/McMito-releases/releases/latest), from the *Assets* list on the release page |
-| **DOI** | [10.5281/zenodo.22647702](https://doi.org/10.5281/zenodo.22647702) |
+| **DOI** | [10.5281/zenodo.21976705](https://doi.org/10.5281/zenodo.21976705) (all versions) |
 | **Website** | [www.mcmito.com](https://www.mcmito.com) |
 | **Contact / licence keys** | cmcman@essex.ac.uk |
 
@@ -155,9 +155,9 @@ The analysis pipeline has been validated against synthetic NIRS recordings with 
 
 ## How to cite
 
-If you use MCMITO in your research, please cite the software together with the underlying method (and Beever et al., 2020, if you use Method 4 or the best-fit window):
+If you use MCMITO in your research, please cite the software (the DOI below covers every version; give the version you used in the brackets) together with the underlying method (and Beever et al., 2020, if you use Method 4 or the best-fit window):
 
-> McManus, C. (2026). *MCMITO: Near-infrared spectroscopy analysis of skeletal-muscle mitochondrial oxidative capacity* (Version 1.4.3) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.22647702
+> McManus, C. (2026). *MCMITO: Near-infrared spectroscopy analysis of skeletal-muscle mitochondrial oxidative capacity* (Version 1.4.3) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.21976705
 
 ---
 
